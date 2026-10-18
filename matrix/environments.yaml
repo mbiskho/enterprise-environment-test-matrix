@@ -1,0 +1,30 @@
+# Every environment we claim to support. Each becomes one CI job.
+# postgres: image tag · proxy: none | squid | squid-tls-intercept · ca: public | corporate · sso: none | keycloak
+environments:
+  - name: baseline
+    postgres: "16"
+    proxy: none
+    ca: public
+    sso: none
+  - name: postgres-14-legacy
+    postgres: "14"
+    proxy: none
+    ca: public
+    sso: none
+  - name: bank-locked-down
+    postgres: "15"
+    proxy: squid
+    ca: corporate
+    sso: keycloak
+    notes: Outbound only via proxy, internal services signed by a private CA, SAML login.
+  - name: tls-intercepting-proxy
+    postgres: "16"
+    proxy: squid-tls-intercept
+    ca: corporate
+    sso: none
+    notes: Proxy re-signs all HTTPS with the corporate CA (common in banks and government).
+  - name: sso-keycloak
+    postgres: "16"
+    proxy: none
+    ca: public
+    sso: keycloak
